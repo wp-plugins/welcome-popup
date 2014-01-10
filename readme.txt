@@ -24,6 +24,13 @@ Increase user interactivity and create curiosity by welcoming your visitors with
 
 * Page exclusion, to not show popup on specific pages.
 
+== Available in Below Languages ==
+
+1. English
+2. French
+3. Spanish
+4. Chinese
+
 
 == Installation ==
 
