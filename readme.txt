@@ -2,7 +2,7 @@
 Contributors: Weblineindia
 Tags: popup, wordpress popup, first visit popup
 Requires at least: 3.3
-Tested up to: 3.8
+Tested up to: 4.1
 License: GPL
 Stable: 1.0
 
