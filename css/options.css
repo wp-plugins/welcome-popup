@@ -1,5 +1,3 @@
 @CHARSET "UTF-8";
 
-#content, #exclude_pages {
-width:25em;
-}
+#exclude_pages {width:25em;}

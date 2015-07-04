@@ -3,7 +3,7 @@
 Plugin Name: Welcome Popup
 Plugin URI: http://technet.weblineindia.com/plugins/wordpress/wordpress-plugin-welcome-popup/
 Description: Increase user interactivity and create curiosity by welcoming your visitors with a personalized message via Popup message. This plugin will allow WordPress site admin to set a personalized message for every visitor, they visit the site first time.
-Version: 1.0
+Version: 1.0.1
 Author: Weblineindia
 Author URI: http://www.weblineindia.com
 License: GPL
@@ -31,6 +31,7 @@ register_uninstall_hook(__FILE__, 'welcome_popup_uninstall');
  */
 function welcome_popup_activate() {
 	global $plugin_version;
+	
 	$default_value = array(
 			'version' => $plugin_version,
 			'title' => 'Title',
@@ -126,12 +127,10 @@ function get_welcome_popup_setting($key= '')
 	{
 		$current_option = get_option('welcome_popup_settings');
 		if(isset($current_option[$key])) {
-
 			return $current_option[$key];
 		}
 		else
 			return '';
-
 	}
 }
 
@@ -213,16 +212,16 @@ function welcome_popup_options_page() {
 		);
 		$msg_box = update_all_settings('welcome_popup_settings', $changed_value);
 	}
-	global $file;?>
+	global $file;
+?>
 <div class="wrap">
-
 	<h2>
 		<?php _e('Welcome Popup Options','welcome_popup');?>
 	</h2>
 	<?php if($msg_box) {?>
 	<div class="updated">
 		<p>
-			<strong><?php _e('Settings Saved','welcome_popup');?> </strong>
+			<strong><?php _e('Settings Saved','welcome_popup');?></strong>
 		</p>
 	</div>
 	<?php }?>
@@ -231,85 +230,76 @@ function welcome_popup_options_page() {
 			<tbody>
 				<tr valign="top">
 					<th scope="row"><?php _e('Title:','welcome_popup');?></th>
-					<td><input name="title" type="text" id="title" class="regular-text"
-						value="<?php echo esc_attr(get_welcome_popup_setting( 'title' ));?>" />
-					</td>
+					<td><input name="title" type="text" id="title" class="regular-text" value="<?php echo esc_attr(get_welcome_popup_setting( 'title' ));?>" /></td>
 				</tr>
 				<tr valign="top">
-					<th scope="row"><?php _e('Content:','welcome_popup');?>
-					</th>
-					<td><?php wp_editor(stripslashes(get_welcome_popup_setting( 'content' )), 'popup_content', array(
+					<th scope="row"><?php _e('Content:','welcome_popup');?></th>
+					<td>
+					<?php 
+					wp_editor(
+						stripslashes(get_welcome_popup_setting( 'content' )), 
+						'popup_content', 
+						array(
 							'media_buttons' => false,
 							'quicktags'     => array("buttons"=>"strong,em,link,b-quote,del,ins,img,ul,ol,li,code,close"),
 							'textarea_name' => 'content',
 							'textarea_rows' => 4,
 							'tinymce'	=> false,
-					) );?></td>
-
+						) 
+					);
+					?>
+					</td>
 				</tr>
 				<tr valign="top">
 					<th scope="row"><?php _e('Only on first visit:','welcome_popup');?></th>
-					<td><input name="first_visit" type="checkbox" value="1"
-					<?php  checked( '1', get_welcome_popup_setting( 'first_visit' ) ); ?> />
-					</td>
+					<td><input name="first_visit" type="checkbox" value="1" <?php  checked( '1', get_welcome_popup_setting( 'first_visit' ) ); ?> /></td>
 				</tr>
 				<tr valign="top">
-					<th scope="row"><?php _e('Popup delay (in seconds):','welcome_popup');?>
-					</th>
-					<td><input name="time" type="text" id="time" class="regular-text"
-						value="<?php echo esc_attr(get_welcome_popup_setting( 'time' ));?>" />
-					</td>
+					<th scope="row"><?php _e('Popup delay (in seconds):','welcome_popup');?></th>
+					<td><input name="time" type="text" id="time" class="regular-text" value="<?php echo esc_attr(get_welcome_popup_setting( 'time' ));?>" /></td>
 				</tr>
 				<tr valign="top">
 					<th scope="row"><?php _e('Show Display never link:','welcome_popup');?></th>
-					<td><input type="checkbox" name="display_never" value="1"
-					<?php checked( '1', get_welcome_popup_setting( 'display_never' ) ); ?> />
-					</td>
+					<td><input type="checkbox" name="display_never" value="1" <?php checked( '1', get_welcome_popup_setting( 'display_never' ) ); ?> /></td>
 				</tr>
 				<tr valign="top">
 					<th scope="row"><?php _e('Exclude Pages:','welcome_popup');?></th>
 					<?php  $exclude_fields = get_welcome_popup_setting('exclude_fields');  ?>
-					<td><select name="exclude_fields[]" size="3" multiple="multiple"
-						tabindex="1" id="exclude_pages">
-							<?php 
-							$pages = get_pages();
-							foreach ( $pages as $page ) { ?>
-							<option
-							<?php if (is_array($exclude_fields) && in_array($page->ID,$exclude_fields)) {echo "selected=selected";}?>
-								value="<?php echo esc_attr($page->ID); ?>">
-								<?php echo __("$page->post_title",'welcome_popup'); ?>
-							</option>
-							<?php 
-							echo $option;
-							}
-							?>
-					</select>
+					<td>
+						<select name="exclude_fields[]" size="3" multiple="multiple" tabindex="1" id="exclude_pages">
+						<?php 
+						$pages = get_pages();
+						foreach ( $pages as $page ) { ?>
+						<option
+						<?php if (is_array($exclude_fields) && in_array($page->ID,$exclude_fields)) {echo "selected=selected";}?>
+							value="<?php echo esc_attr($page->ID); ?>">
+							<?php echo __("$page->post_title",'welcome_popup'); ?>
+						</option>
+						<?php 
+						echo $option;
+						}
+						?>
+						</select>
 					</td>
 				</tr>
-
 			</tbody>
 		</table>
-
 		<table class="form-table">
 			<tbody>
 				<tr valign="top">
 					<th scope="row"></th>
-					<td><p class="submit">
-							<input type="submit" name="welcome_popup_submit" id="welcome_popup_submit"
-								class="button button-primary"
-								value="<?php _e('Save Changes','welcome_popup');?>">
+					<td>
+						<p class="submit">
+							<input type="submit" name="welcome_popup_submit" id="welcome_popup_submit" class="button button-primary" value="<?php _e('Save Changes','welcome_popup');?>">
 						</p>
 					</td>
 				</tr>
 			</tbody>
-
 		</table>
 	</form>
-
-
-
 </div>
-<?php }
+<?php 
+}
 
 
 /**
@@ -323,15 +313,12 @@ function welcome_popup_set_cookie() {
 	global $post,$file, $url,$flag;
 	$flag = 0;
 	$post->ID;
-
 	$exclude_fields = get_welcome_popup_setting('exclude_fields');
-
 
 	$url_css = plugin_dir_url($file) . dirname(plugin_basename(__FILE__)) .'/css/mystyle.css';
 	wp_register_style( 'plugin_css', $url_css );
 	wp_enqueue_style( 'plugin_css' );
 	
-
 	if($exclude_fields!='')
 	{
 		if(!in_array($post->ID, $exclude_fields)){
@@ -377,15 +364,15 @@ function get_welcome_popup() {
 			if(!isset($_COOKIE['popup'])){
 
 				$popup_title = get_welcome_popup_setting( 'title' );
-				$popup_content = stripslashes(get_welcome_popup_setting( 'content' ));
+				$content = stripslashes(get_welcome_popup_setting( 'content' ));
+				$popup_content = apply_filters('the_content', $content);
 				$popup_time = get_welcome_popup_setting( 'time' );
 
 				if($popup_title == '') {
 					$output = '<div class="popup_bg">
 					<div class="popup_block">
 					<div class="inner">
-					<a href="#" class="btn_close" title="Close">Close</a>
-					
+					<a href="#" class="btn_close" title="'.__("Close","welcome_popup").'">'.__("Close","welcome_popup").'</a>
 					<div class="content_box blank">
 					<p>'.$popup_content.'</p>';
 				}
@@ -394,19 +381,17 @@ function get_welcome_popup() {
 					$output = '<div class="popup_bg">
 					<div class="popup_block">
 					<div class="inner">
-					<a href="#" class="btn_close" title="Close">Close</a>
+					<a href="#" class="btn_close" title="'.__("Close","welcome_popup").'">'.__("Close","welcome_popup").'</a>
 					<div class="heading_block">
 					<span class="sprite icon01"></span>
 					<div class="heading01">'.$popup_title.'</div>
 					</div>
 					<div class="content_box">
-					
-					
 					<p>'.$popup_content.'</p>';
 				}
 
 				if($show_hide == 1) {
-					$output = $output.'<p class="display"><a href="#">Dont Display Again</a></p>';
+					$output = $output.'<p class="display"><a href="#">'.__("Dont Display Again","welcome_popup").'</a></p>';
 				}
 
 				$output = $output.'</div></div></div></div><div id="overlay" style="display: block;"></div>';
@@ -426,37 +411,33 @@ function get_welcome_popup() {
 			$exclude_fields = get_welcome_popup_setting('exclude_fields');
 			$show_hide = get_welcome_popup_setting('display_never');
 			$popup_title = get_welcome_popup_setting( 'title' );
-			$popup_content = stripslashes(get_welcome_popup_setting( 'content' ));
+			$content = stripslashes(get_welcome_popup_setting( 'content' ));
+			$popup_content = apply_filters('the_content', $content);
 			$popup_time = get_welcome_popup_setting( 'time' );
 
 			if($popup_title == '') {
 				$output = '<div class="popup_bg">
 				<div class="popup_block">
 				<div class="inner">
-				<a href="#" class="btn_close" title="Close">Close</a>
-				
+				<a href="#" class="btn_close" title="'.__("Close","welcome_popup").'">'.__("Close","welcome_popup").'</a>
 				<div class="content_box blank">
 				<p>'.$popup_content.'</p>';
 			}
-			
 			else {
 				$output = '<div class="popup_bg">
 				<div class="popup_block">
 				<div class="inner">
-				<a href="#" class="btn_close" title="Close">Close</a>
+				<a href="#" class="btn_close" title="'.__("Close","welcome_popup").'">'.__("Close","welcome_popup").'</a>
 				<div class="heading_block">
 				<span class="sprite icon01"></span>
 				<div class="heading01">'.$popup_title.'</div>
 				</div>
 				<div class="content_box">
-				
-				
 				<p>'.$popup_content.'</p>';
 			}
 			
-
 			if($show_hide == 1) {
-				$output = $output.'<p class="display"><a href="#">Dont Display Again</a></p>';
+				$output = $output.'<p class="display"><a href="#">'.__("Dont Display Again","welcome_popup").'</a></p>';
 			}
 
 			$output = $output.'</div></div></div></div><div id="overlay" style="display: block;"></div>';
@@ -464,7 +445,6 @@ function get_welcome_popup() {
 			if($flag == 1) {
 				echo $output;
 				$flag=0;
-
 			}
 		}
 		else {

@@ -25,7 +25,7 @@ var create_popup = {
 			
 			setTimeout(function(){jQuery('#overlay').show()}, delay_time);
 			
-			jQuery('.popup_bg').css('position', 'fixed');
+			//jQuery('.popup_bg').css('position', 'fixed');
 			setTimeout(function(){jQuery('.popup_bg').fadeIn(1000).show()},more_delay);
 			
 			jQuery('.btn_close').click(function() {
