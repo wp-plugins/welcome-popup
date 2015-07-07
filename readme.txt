@@ -1,5 +1,5 @@
 === Welcome Popup ===
-Contributors: Weblineindia
+Contributors: weblineindia
 Tags: popup, wordpress popup, first visit popup
 Requires at least: 3.3
 Tested up to: 4.2.2
